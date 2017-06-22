@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.julysky</groupId>
+    <artifactId>service_interface</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+
+    <build>
+        <plugins>
+            <!--http://maven.apache.org/plugins/maven-resources-plugin/index.html-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.vlkan</groupId>
+                <artifactId>quasar-maven-plugin</artifactId>
+                <version>0.7.5</version>
+                <configuration>
+                    <check>true</check>
+                    <debug>true</debug>
+                    <verbose>true</verbose>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>instrument</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>persistence-api</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.16</version>
+        </dependency>
+        <dependency>
+            <groupId>co.paralleluniverse</groupId>
+            <artifactId>quasar-core</artifactId>
+            <version>0.7.5</version>
+            <classifier>jdk8</classifier>
+        </dependency>
+    </dependencies>
+</project>
