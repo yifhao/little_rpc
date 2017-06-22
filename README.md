@@ -1,6 +1,10 @@
 # little_rpc
 by haoyifen on 2017/6/1 17:33
 
+一个超轻量级的RPC服务注册, 发现, 调用的框架.
+
+使用Spring Boot管理Bean以及自动配置, 使用Netty处理网络请求, 使用ProtoStuff编解码, 使用Zookeeper作为服务注册和发现. 使用Quasar替代线程进行服务的调用.
+
 ## 来源 
 源于以下两篇文章
 
@@ -11,10 +15,17 @@ http://www.cnblogs.com/luxiaoxun/p/5272384.html
 轻量级分布式 RPC 框架
 
 https://my.oschina.net/huangyong/blog/361751
+
 ## 改进
-### 1. 协程
-在他们的基础之上, 将基于线程的调度方式改成了协程. 将模块划分开. RPC_Common模块拥有所有的服务注册, 服务扫描, 服务获取功能, 具体的业务模块将不与这些代码耦合, 使用Spring Boot的自动配置来配置这些功能. 
-### 2.模块划分以及Spring Boot自动配置
+### 纤程quasar
+
+在他们的基础之上, 将基于线程的调度方式改成了quasar纤程. 当服务调用阻塞时, 相对于线程调度的方式, 大大提高了rps.
+
+### 模块划分
+将模块划分开. RPC_Common模块拥有所有的服务注册, 服务扫描, 服务获取功能, 具体的业务模块将不与这些代码耦合.
+
+### Spring Boot自动配置
+使用Spring Boot的自动配置来配置这些功能. 
 使用自定义注解@EnableServiceRegistry来启动服务端的配置和注册.
 使用自定义注解@EnableServiceDiscovery来启动客户端的服务发现和连接管理功能.
 
@@ -23,9 +34,10 @@ https://my.oschina.net/huangyong/blog/361751
 ## 性能对比
 以下测试都是基于4核i7二代笔记本CPU, 2.2G, Win10的测试. 且服务端和客户端运行于同一台笔记本上.
 
-
+### little_rpc
 little_rpc因为使用了协程, 能够在使用8个线程的情况下, 达到8K-1W rqs/s的速度, 而无论服务端的阻塞时间多长.
 
+### Netty_RPC
 而上面文章中的Netty_RPC使用的是线程进行调用. 当服务端不阻塞, 马上返回, Netty_RPC也能到达8K-1W rqs/s的速度, 但是当服务端阻塞时间很长时, 客户端调用线程也将阻塞.
 如果服务端的调用延时为t ms, 客户端的线程数为N.
 那么客户端的rqs大致为N*1000/t 每秒, 当t很大时, rqs会迅速衰减. 
